@@ -56,6 +56,7 @@ class Backoffice extends CI_Controller {
             $output = $crud->render();
             $output = (array) $output;
             $output['page'] = 'crud';
+            $output['task'] = 'CRUD - Categorie';
             $output['title'] = 'Categorie';
             $this->load->view('BO-template.php', $output);
         }catch(Exception $e){
@@ -80,7 +81,7 @@ class Backoffice extends CI_Controller {
             $crud->display_as('description',"Résumé");
             $crud->set_field_upload('image','assets/uploads/files');
             
-            
+            $crud->unset_fields('datemodif');
             
             $crud->display_as('urlarticle','Url pour y acceder (sans / )');
             
@@ -105,13 +106,7 @@ class Backoffice extends CI_Controller {
                 
             });
             $crud->callback_before_update(function ($post_array)  {
-                $actualy = $this->Article->get(
-                    array(
-                        'titre'=>$post_array['titre'],
-                        'urlarticle'=>$post_array['urlarticle']
-                    )
-                );
-                // $post_array['titre']=trim($post_array['titre']);
+                $post_array['titre']=trim($post_array['titre']);
                 $post_array['description']=trim($post_array['description']);
                 if(empty($post_array['urlarticle'])){
                     $a = $this->slugify($post_array['titre']);
@@ -123,14 +118,13 @@ class Backoffice extends CI_Controller {
                                                     : $post_array['urlarticle'];
                     $post_array['urlarticle']=trim($this->slugify($post_array['urlarticle']));
                 } 
-                
-                
-                $post_array['urlarticle'] = $post_array['urlarticle']."-articletor".$actualy[0]['id'];
+                $post_array['urlarticle'] = $post_array['urlarticle'];
                 return $post_array;
             });
             $output = $crud->render();
             $output = (array) $output;
             $output['page'] = 'crud';
+            $output['task'] = 'CRUD - Article';
             $output['title'] = 'Article';
             $this->load->view('BO-template.php', $output);
         } catch (\Throwable $e) {
@@ -170,6 +164,7 @@ class Backoffice extends CI_Controller {
         $data['listArticle'] = $this->Article->getAll();
         $data['title'] = "Contenue";
         $data['page'] = "contenue";
+        $output['task'] = 'CRUD - Contenue';
         $this->load->view('BO-template.php', $data);
     }
 
@@ -182,31 +177,65 @@ class Backoffice extends CI_Controller {
             $this->load->library('grocery_CRUD');
             $crud = new grocery_CRUD();
 
+            $this->load->model('Article');
+            
+            $obj = $this->Article->getContent(array('idarticle' => $id));
+
             $crud->set_table('contenue');
             $crud->set_subject('Contenue');
             $crud->where('idarticle',$id);
 
             $crud->columns('idarticle','titre', 'image', 'descriimage', 'texte', 'typecontenue', 'urlcontenue', 'ordre');
-            $crud->add_fields('idarticle','titre', 'image', 'descriimage', 'texte', 'typecontenue', 'urlcontenue', 'ordre');
-            $crud->edit_fields('idarticle','titre', 'image', 'descriimage', 'texte', 'typecontenue', 'urlcontenue',  'ordre');
             
             $crud->field_type('typecontenue','dropdown',
-                                array('0' => 'Texte simple', '1' => 'Texte avec image','2' => 'Citation' , '4' => 'Citation avec image'));
+                                array(
+                                    '1' => 'Texte simple', 
+                                    '2' => 'Texte avec image',
+                                    '3' => 'Citation' , 
+                                    '4' => 'Citation avec image'
+                                )
+                            );
 
             $crud->display_as('titre',"Titre du contenue");
             $crud->display_as('image',"Image");
             $crud->display_as('descriimage',"Description de l'image");
             $crud->display_as('texte',"Texte");
             $crud->display_as('typecontenue',"Type de contenue");
+            $crud->field_type('emplacementimage','dropdown',
+                array(
+                    '1' => 'A Droite',
+                    '2' => 'A Gauche'
+                )
+            );
+            $crud->unset_fields("datemodification");
+            $crud->display_as('emplacementimage',"Positionnement de l'image");
             $crud->display_as('urlcontenue',"Url vers le contenue");
             $crud->display_as('ordre',"Ordre");
             $crud->field_type('idarticle', 'hidden', $id);
-            $crud->field_type('typecontenue', 'integer');
             $crud->set_field_upload('image','assets/uploads/files');
+
+
+            $crud->callback_before_insert(function ($post_array)  {
+                
+                try {
+                    $post_array['titre']=trim($post_array['titre']);
+                    $post_array['texte']=trim($post_array['texte']);
+                    if (empty($post_array['urlcontenue'])) {
+                        $post_array['urlcontenue'] = $this->slugify($post_array['nom']);
+                    }
+                    else {
+                        $post_array['urlcontenue'] = $this->slugify($post_array['urlcontenue']);
+                    }
+                } catch (\Throwable $e) {
+                    show_error($e->getMessage().' --- '.$e->getTraceAsString());
+                }
+                return $post_array;
+            });
 
             $output = $crud->render();
             $output = (array) $output;
             $output['page'] = 'crud';
+            $output['task'] = 'CRUD - Contenue pour l\'article n° '.$id;
             $output['title'] = 'Contenue';
             $this->load->view('BO-template.php', $output);
         }catch (\Exception $e){

@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => 'root',
-	'database' => 'climat',
+	'hostname' => 'mysql-fanantenanar.alwaysdata.net',
+	'username' => '268747',
+	'password' => 'BlackRebelion?9',
+	'database' => 'fanantenanar_climat',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

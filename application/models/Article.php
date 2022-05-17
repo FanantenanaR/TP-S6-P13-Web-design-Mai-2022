@@ -18,4 +18,10 @@
             return $reponse;
         }
 
+        public function getContent($where){
+            $this->db->order_by('ordre', 'asc');
+            $reponse = $this->db->get_where('vcontenue', $where)->result_array();
+            return $reponse;
+        }
+
     }

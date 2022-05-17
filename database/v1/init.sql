@@ -28,7 +28,7 @@ create table contenue (
     image varchar(100) default '',
     descriimage varchar(100) default '',
     emplacementimage smallint default 0 check (emplacementimage >=0),
-    texte varchar(255) default '',
+    texte text,
     typecontenue smallint default 0 check (typecontenue>=0),
     urlcontenue varchar(20) default '',
     datemodification datetime default now(),
@@ -50,10 +50,26 @@ create or replace view varticle as
         left join tag on tag.idarticle = article.id
         join categorie on tag.idcategorie = categorie.id;
 
-create view varticle3lastest as 
+create or replace view varticle3lastest as 
     select *
     from varticle
     order by datepubli DESC
     limit 3;
+
+create or replace view vcontenue as 
+    select id,
+            idarticle,
+            titre, 
+            image,
+            descriimage,
+            emplacementimage, 
+            texte,
+            typecontenue, 
+            urlcontenue,
+            datemodification,
+            datecreation,
+            ordre
+        from contenue
+        order by idarticle asc, ordre asc;
 
 

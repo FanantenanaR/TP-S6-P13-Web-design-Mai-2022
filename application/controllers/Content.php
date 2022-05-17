@@ -23,9 +23,10 @@ class Content extends CI_Controller {
 		$data['title'] = 'Article';
 		$this->load->model('Article');
 		$data['article'] = $this->Article->get(array('id'=>$id))[0];
+		$data['listContenue'] = $this->Article->getContent(array('idarticle'=> $id));
 		$this->load->view('FO-template', $data);
 	}
 
-
+	
 }
 ?>
