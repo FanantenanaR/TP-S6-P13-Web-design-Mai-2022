@@ -9,7 +9,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Clima-now -- Backoffice - Accueil </title>
     <link rel="stylesheet" href="<?php echo bootstrap_css("bootstrap.min.css"); ?>">
     <link rel="stylesheet" href="<?php echo font_url("simple-line-icons.min.css"); ?>">
     <link rel="stylesheet" href="<?php echo css_url("styles.min.css"); ?>">
@@ -22,7 +21,7 @@
             <hr/>
             <p> Ou vous voulez visiter en premier lieux? </p>
             <div class="btn-group d-flex mt-4 justify-content-center" role="group" aria-label="Basic outlined example">
-                <a href="<?php echo site_url('Backoffice/')?>" class="btn btn-outline-primary">Categorie</a>
+                <a href="<?php echo site_url('Backoffice/categorie')?>" class="btn btn-outline-primary">Categorie</a>
                 <a href="<?php echo site_url('Backoffice/')?>" class="btn btn-outline-primary">Article</a>
             </div>
         </div>

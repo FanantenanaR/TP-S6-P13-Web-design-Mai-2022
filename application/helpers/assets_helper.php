@@ -36,4 +36,10 @@
             return base_url("assets/vendor/".$lien);
         }
     }
+
+    if ( ! function_exists('uploadedfile_url')){
+        function uploadedfile_url($lien){
+            return base_url("assets/uploads/files/".$lien);
+        }
+    }
 ?>    

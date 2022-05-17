@@ -31,9 +31,11 @@
             </div>
             <div class="col-md-8 d-flex justify-content-center py-3">
                 <ul class="nav nav-pills">
-                    <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Accueil</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Categorie</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Article</a></li>
+                    <li class="nav-item"><a href="<?php echo site_url('Backoffice/');?>" class="nav-link <?php echo $page == "index" ? "active" : ""; ?>" aria-current="page">Accueil</a></li>
+                    <li class="nav-item"><a href="<?php echo site_url('Backoffice/categorie');?>" class="nav-link <?php echo $titre == "- Categorie" ? "active" : ""; ?>">Categorie</a></li>
+                    <li class="nav-item"><a href="<?php echo site_url('Backoffice/article');?>" class="nav-link <?php echo $titre == "- Article" ? "active" : ""; ?>">Article</a></li>
+                    <li class="nav-item"><a href="<?php echo site_url('Backoffice/contenue');?>" class="nav-link <?php echo $titre == "- Contenue" ? "active" : ""; ?>">Contenue</a></li>
+                    <li class="nav-item"><a href="<?php echo site_url('Backoffice/contenue');?>" class="nav-link <?php echo $titre == "- Deconnexion" ? "active" : ""; ?>">Deconnexion</a></li>
                 </ul>
             </div>
             
