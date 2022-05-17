@@ -1,0 +1,1 @@
+<p>Attendez que votre mail soit activer!</p>
