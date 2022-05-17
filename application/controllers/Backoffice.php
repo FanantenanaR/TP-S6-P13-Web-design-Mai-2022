@@ -67,20 +67,19 @@ class Backoffice extends CI_Controller {
         try {
             $this->load->library('grocery_CRUD');
             $crud = new grocery_CRUD();
+            $this->load->model('Article');
             // $crud->set_theme('datatables');
             $crud->set_table('article');
             $crud->set_subject('Article');
             $crud->columns('titre','image', 'description', 'datepubli','urlarticle');
-            $crud->add_fields('titre','image', 'description', 'datepubli','urlarticle');
-            $crud->edit_fields('titre','image', 'description', 'urlarticle');
+            $crud->set_relation_n_n('Categories', 'tag', 'categorie', 'idarticle', 'idcategorie', 'nom');
             $crud->required_fields('titre');
             $crud->display_as('titre',"Titre de l'article");
             $crud->display_as('idCategorie',"Categorie");
             $crud->display_as('descriimage',"Description de l'image");
             $crud->display_as('description',"Résumé");
             $crud->set_field_upload('image','assets/uploads/files');
-            $crud->set_relation_n_n('Categories', 'tag', 'categorie', 'idarticle', 'idcategorie', 'nom');
-            $crud->set_relation_n_n('Categories', 'tag', 'categorie', 'idarticle', 'idcategorie', 'nom');
+            
             
             
             $crud->display_as('urlarticle','Url pour y acceder (sans / )');
@@ -103,10 +102,16 @@ class Backoffice extends CI_Controller {
                 return $post_array;
             });
             $crud->callback_after_insert(function ($post_array) {
-                var_dump($post_array);
+                
             });
             $crud->callback_before_update(function ($post_array)  {
-                $post_array['titre']=trim($post_array['titre']);
+                $actualy = $this->Article->get(
+                    array(
+                        'titre'=>$post_array['titre'],
+                        'urlarticle'=>$post_array['urlarticle']
+                    )
+                );
+                // $post_array['titre']=trim($post_array['titre']);
                 $post_array['description']=trim($post_array['description']);
                 if(empty($post_array['urlarticle'])){
                     $a = $this->slugify($post_array['titre']);
@@ -118,6 +123,9 @@ class Backoffice extends CI_Controller {
                                                     : $post_array['urlarticle'];
                     $post_array['urlarticle']=trim($this->slugify($post_array['urlarticle']));
                 } 
+                
+                
+                $post_array['urlarticle'] = $post_array['urlarticle']."-articletor".$actualy[0]['id'];
                 return $post_array;
             });
             $output = $crud->render();

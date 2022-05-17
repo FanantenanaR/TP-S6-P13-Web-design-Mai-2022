@@ -36,14 +36,24 @@ create table contenue (
     ordre smallint default 1 check (ordre>0)
 );
 
-create view varticle as
-    select article.*,
+create or replace view varticle as
+    select article.id,
+            article.titre,
+            article.image,
+            article.description,
+            article.datemodif,
+            article.datepubli,
+            article.urlarticle,
         group_concat(categorie.nom SEPARATOR ', ') as nomcategorie,
         group_concat(categorie.id SEPARATOR ';;') as idcategorie
     from article 
         left join tag on tag.idarticle = article.id
         join categorie on tag.idcategorie = categorie.id;
 
-
+create view varticle3lastest as 
+    select *
+    from varticle
+    order by datepubli DESC
+    limit 3;
 
 

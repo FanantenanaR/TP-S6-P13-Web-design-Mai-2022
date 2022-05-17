@@ -8,4 +8,14 @@
             return $reponse;
         }
 
+        public function get3Lastest(){
+            $reponse = $this->db->get('varticle3lastest')->result_array();
+            return $reponse;
+        }
+
+        public function get($where){
+            $reponse = $this->db->get_where('varticle', $where)->result_array();
+            return $reponse;
+        }
+
     }

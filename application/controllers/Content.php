@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Accueil extends CI_Controller {
+class Content extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -18,18 +18,14 @@ class Accueil extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/userguide3/general/urls.html
 	 */
-	public function index(){
-		$data['page']='accueil';
-		$data['title'] = 'Accueil';
+	public function index($id){
+		$data['page']='article';
+		$data['title'] = 'Article';
 		$this->load->model('Article');
-		$data['listArticle'] = $this->Article->get3Lastest();
+		$data['article'] = $this->Article->get(array('id'=>$id))[0];
 		$this->load->view('FO-template', $data);
 	}
 
-	public function aboutus() {
-		$data['page']='aboutus';
-		$data['title']='About Us';
-		$this->load->view('FO-template', $data);
-	}
 
 }
+?>
